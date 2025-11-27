@@ -7,3 +7,15 @@ services:
     restart: unless-stopped
     ports:
       - '8080:8080'
+    networks:
+      - dokploy-network
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.langgraph-api.rule=Host(`pdf.bri-calculator.com`)
+      - traefik.http.routers.langgraph-api.entrypoints=websecure
+      - traefik.http.routers.langgraph-api.tls.certResolver=letsencrypt
+      - traefik.http.services.langgraph-api.loadbalancer.server.port=8080
+      
+networks:
+  dokploy-network:
+    external: true
